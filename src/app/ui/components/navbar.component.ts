@@ -2,16 +2,17 @@ import { RoutePaths } from './../../routes.paths';
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { AuthenticationGateway } from '../../remote/gateway/authentication.gateway';
+import { NavbarUserComponent } from './navbar-user.component';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [RouterModule],
+  imports: [RouterModule, NavbarUserComponent],
   template: `
     <div class="navbar bg-base-200 flex justify-between items-center px-8">
       <a class="font-semibold text-lg opacity-80 hover:opacity-100" routerLink="/">Angular17App</a>
       @if (isAuthenticated) {
-      <span class="">Hello, {{ userName }}</span>
+      <app-navbar-user />
       } @else {
       <a class="btn btn-secondary" [routerLink]="loginPath">Login</a>
       }
@@ -19,15 +20,11 @@ import { AuthenticationGateway } from '../../remote/gateway/authentication.gatew
   `,
 })
 export class NavbarComponent {
-  constructor(private authenticationGateway: AuthenticationGateway) {}
+  constructor(private _authGateway: AuthenticationGateway) {}
 
   loginPath = RoutePaths.login;
 
   get isAuthenticated(): boolean {
-    return this.authenticationGateway.isAuthenticated;
-  }
-
-  get userName(): string {
-    return this.authenticationGateway.authenticatedUser?.name ?? '';
+    return this._authGateway.isAuthenticated;
   }
 }

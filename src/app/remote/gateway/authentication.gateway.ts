@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { LocalKeys, LocalRepository } from '../repositories/local.repository';
 import { User } from '../../domain/models/user';
+import { Router } from '@angular/router';
+import { RoutePaths } from '../../routes.paths';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthenticationGateway {
-  constructor(private _localRepository: LocalRepository) {}
+  constructor(private _localRepository: LocalRepository, private _router: Router) {}
 
   get isAuthenticated(): boolean {
     return !!this._localRepository.storage.getItem(LocalKeys.user);
@@ -26,5 +28,6 @@ export class AuthenticationGateway {
 
   logout(): void {
     this._localRepository.storage.removeItem(LocalKeys.user);
+    this._router.navigate([RoutePaths.login]);
   }
 }
