@@ -1,13 +1,18 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
+import { RouterModule, RouterOutlet } from '@angular/router';
+import { NavbarComponent } from './ui/components/navbar.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  template: `
+    <section class="flex flex-col">
+      <app-navbar />
+      <router-outlet />
+    </section>
+  `,
+  imports: [CommonModule, NavbarComponent, RouterModule],
 })
 export class AppComponent {
   title = 'angular-17-app';
