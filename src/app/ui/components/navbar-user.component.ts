@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { AuthenticationGateway } from '../../remote/gateway/authentication.gateway';
 
 @Component({
@@ -10,7 +10,7 @@ import { AuthenticationGateway } from '../../remote/gateway/authentication.gatew
   </div>`,
 })
 export class NavbarUserComponent {
-  constructor(private _authGateway: AuthenticationGateway) {}
+  private _authGateway = inject(AuthenticationGateway);
 
   get userName(): string {
     return this._authGateway.authenticatedUser?.name ?? '';

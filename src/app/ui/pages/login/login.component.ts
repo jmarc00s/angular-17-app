@@ -1,7 +1,7 @@
 import { AuthenticationGateway } from './../../../remote/gateway/authentication.gateway';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, computed, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
 import { RoutePaths } from '../../../routes.paths';
 
 @Component({
@@ -17,31 +17,21 @@ import { RoutePaths } from '../../../routes.paths';
         <p class="text-lg font-semibold text-center">Login</p>
         <label for="name" id="name">Name</label>
         <input class="input input-bordered w-full" formControlName="name" id="name" />
-        <button type="submit" class="btn btn-success shadow-md" [disabled]="isInvalid">
+        <button type="submit" class="btn btn-success shadow-md" [disabled]="loginForm.invalid">
           Login
         </button>
       </form>
     </section>
   `,
 })
-export class LoginPageComponent implements OnInit {
-  loginForm!: FormGroup;
+export class LoginPageComponent {
+  private _formBuilder = inject(FormBuilder);
+  private _authGateway = inject(AuthenticationGateway);
+  private _router = inject(Router);
 
-  get isInvalid(): boolean {
-    return this.loginForm.invalid;
-  }
-
-  constructor(
-    private _formBuilder: FormBuilder,
-    private _authGateway: AuthenticationGateway,
-    private _router: Router
-  ) {}
-
-  ngOnInit(): void {
-    this.loginForm = this._formBuilder.group({
-      name: ['', [Validators.required]],
-    });
-  }
+  loginForm: FormGroup = this._formBuilder.group({
+    name: ['', [Validators.required]],
+  });
 
   login(): void {
     const {
